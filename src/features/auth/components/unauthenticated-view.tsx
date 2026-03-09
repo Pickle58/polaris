@@ -20,9 +20,9 @@ export const UnauthenticatedView = () => {
             <ShieldAlertIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Unauthorized Access</ItemTitle>
+            <ItemTitle>Sign in required</ItemTitle>
             <ItemDescription>
-              You are not authorized to access this resource.
+              You are not signed in. Please sign in to access this resource.
             </ItemDescription>
           </ItemContent>
           <ItemActions>
