@@ -1,6 +1,9 @@
 import { inngest } from "@/inngest/client";
+import { firecrawl } from "@/lib/firecrawl";
 import { anthropic } from "@ai-sdk/anthropic";
 import { generateText } from "ai";
+
+const URL_REGEX = /https?:\/\/[^\s]+/g;
 
 const MODEL_CANDIDATES = Array.from(
   new Set(
@@ -21,6 +24,29 @@ export const demoGenerate = inngest.createFunction(
   { id: "demo-generate" },
   { event: "demo/generate" },
   async ({ event, step }) => {
+    const { prompt } = event.data as { prompt: string };
+
+    const urls = await step.run("extact-urls", async () => {
+      return prompt.match(URL_REGEX) ?? [];
+    }) as string[];
+
+    const scrapedContent = await step.run("scrape=urls", async () => {
+      const results = await Promise.all(
+        urls.map(async (url) => {
+          const result = await firecrawl.scrape(
+            url,
+            { formats: ["markdown"] },
+          );
+          return result.markdown ?? null;
+        })
+      );
+      return results.filter(Boolean).join("\n\n");
+    });
+
+    const finalPrompt = scrapedContent 
+    ? `Context:\n${scrapedContent}\n\nQuestion: ${prompt}` 
+    : prompt;
+
     const text = await step.run("generate-text", async () => {
       if (!process.env.ANTHROPIC_API_KEY) {
         throw new Error("Missing ANTHROPIC_API_KEY");
@@ -35,7 +61,7 @@ export const demoGenerate = inngest.createFunction(
         try {
           const generated = await generateText({
             model: anthropic(modelId),
-            prompt: "Write a vegetarian lasagna recipe for 4 people.",
+            prompt: finalPrompt,
           });
 
           return generated.text;

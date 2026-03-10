@@ -24,7 +24,7 @@ export default function DemoPage() {
         setLoading2(false);
     }
     return (
-        <div className="p=8 space-x-4">
+        <div className="p-8 space-x-4">
             <Button disabled={loading} onClick={handleBlocking}>
                 {loading ? "Loading..." : "Run Blocking API Route"}
                 Blocking
