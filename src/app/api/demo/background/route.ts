@@ -1,4 +1,5 @@
 import { inngest } from '@/inngest/client';
+import { NextResponse } from 'next/server';
 
 export async function POST() {
   await inngest.send({ 
@@ -6,5 +7,5 @@ export async function POST() {
     data: {},
    })
 
-return Response.json({ status: "started" })
+return NextResponse.json({ status: 'started' }, { status: 202 })
 }
