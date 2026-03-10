@@ -39,6 +39,11 @@ export async function POST() {
       const response = await generateText({
         model: anthropic(modelId),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
+        experimental_telemetry: {
+          isEnabled: true,
+          recordInputs: true,
+          recordOutputs: true,
+        },
       });
 
       return NextResponse.json({ provider: "anthropic", model: modelId, response });

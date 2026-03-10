@@ -43,9 +43,9 @@ export const demoGenerate = inngest.createFunction(
       return results.filter(Boolean).join("\n\n");
     });
 
-    const finalPrompt = scrapedContent 
-    ? `Context:\n${scrapedContent}\n\nQuestion: ${prompt}` 
-    : prompt;
+    const finalPrompt = scrapedContent
+      ? `Context:\n${scrapedContent}\n\nQuestion: ${prompt}`
+      : prompt;
 
     const text = await step.run("generate-text", async () => {
       if (!process.env.ANTHROPIC_API_KEY) {
@@ -62,6 +62,11 @@ export const demoGenerate = inngest.createFunction(
           const generated = await generateText({
             model: anthropic(modelId),
             prompt: finalPrompt,
+            experimental_telemetry: {
+              isEnabled: true,
+              recordInputs: true,
+              recordOutputs: true,
+            },
           });
 
           return generated.text;
@@ -86,5 +91,15 @@ export const demoGenerate = inngest.createFunction(
       eventName: event.name,
       text,
     };
+  }
+);
+
+export const demoError = inngest.createFunction(
+  { id: "demo-error" },
+  { event: "demo/error" },
+  async ({ step }) => {
+    await step.run("fail", async () => {
+      throw new Error("Inngest error: background job failed!")
+    });
   }
 );
