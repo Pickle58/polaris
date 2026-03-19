@@ -130,26 +130,26 @@ export const Navbar = ({
                 </Breadcrumb>
                 {project?.importStatus === "importing" ? (
                     <Tooltip>
-                       <TooltipTrigger asChild>
-                        <LoaderIcon className="size-4 text-muted-foreground animate-spin" />
-                        </TooltipTrigger> 
+                        <TooltipTrigger asChild>
+                            <LoaderIcon className="size-4 text-muted-foreground animate-spin" />
+                        </TooltipTrigger>
                         <TooltipContent>Importing...</TooltipContent>
                     </Tooltip>
                 ) : (
-                   project?.updatedAt && (
                     <Tooltip>
-                       <TooltipTrigger asChild>
-                        <CloudCheckIcon className="size-4 text-muted-foreground" />
-                        </TooltipTrigger> 
+                        <TooltipTrigger asChild>
+                            <CloudCheckIcon className="size-4 text-muted-foreground" />
+                        </TooltipTrigger>
                         <TooltipContent>
                             Saved{" "}
-                            {formatDistanceToNow(
-                                project.updatedAt,
-                                { addSuffix: true }
-                            )}
+                            {project?.updatedAt
+                                ? formatDistanceToNow(
+                                    project.updatedAt,
+                                    { addSuffix: true }
+                                )
+                                : "Loading..."}
                         </TooltipContent>
                     </Tooltip>
-                   ) 
                 )}
             </div>
             <div className="flex items-center gap-2">
