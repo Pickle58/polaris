@@ -2,20 +2,37 @@ import { useMutation, useQuery } from "convex/react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
 
+export const useFile = (fileId: Id<"files"> | null) => {
+    return useQuery(api.files.getFile, fileId ? { id: fileId} : "skip");
+};
+
+export const useFilePath = (fileId: Id<"files"> | null) => {
+    return useQuery(api.files.getFilePath, fileId ? { id: fileId} : "skip");
+};
+
 export const useCreateFile = () => {
     return useMutation(api.files.createFile);
+    // TODO: Add optimistic mutation for file creation
+};
+
+export const useUpdateFile = () => {
+    return useMutation(api.files.updateFile);
+    // TODO: Add optimistic mutation for file updates
 };
 
 export const useCreateFolder = () => {
     return useMutation(api.files.createFolder);
+    // TODO: Add optimistic mutation for folder creation
 };
 
 export const useRenameFile = () => {
     return useMutation(api.files.renameFile);
+    // TODO: Add optimistic mutation for file renaming
 };
 
 export const useDeleteFile = () => {
     return useMutation(api.files.deleteFile);
+    // TODO: Add optimistic mutation for file deletion
 };
 
 export const useFolderContents = ({
