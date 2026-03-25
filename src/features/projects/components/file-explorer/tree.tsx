@@ -1,6 +1,5 @@
 import { ChevronRightIcon } from "lucide-react";
 import { FileIcon, FolderIcon } from "@react-symbols/icons/utils";
-
 import { cn } from "@/lib/utils";
 
 import {
@@ -10,15 +9,16 @@ import {
     useRenameFile,
     useDeleteFile,
 } from "../../hooks/use-files";
+import { useEditor } from "@/features/editor/hooks/use-editor";
 
 import { getItemPadding } from "./constants";
 import { LoadingRow } from "./loading-row";
 import { CreateInput } from "./create-input";
+import { RenameInput } from "./rename-input";
+import { TreeItemWrapper } from "./tree-item-wrapper";
 
 import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import { useState } from "react";
-import { TreeItemWrapper } from "./tree-item-wrapper";
-import { RenameInput } from "./rename-input";
 
 export const Tree = ({
     item,
@@ -37,6 +37,8 @@ export const Tree = ({
     const deleteFile = useDeleteFile();
     const createFile = useCreateFile();
     const createFolder = useCreateFolder();
+
+    const { openFile, closeTab, activeTabId } = useEditor(projectId);
 
     const folderContents = useFolderContents({
         projectId,
@@ -79,6 +81,7 @@ export const Tree = ({
 
     if (item.type === "file") {
         const fileName = item.name;
+        const isActive = activeTabId === item._id;
 
         if (isRenaming) {
            return (
@@ -97,12 +100,12 @@ export const Tree = ({
             <TreeItemWrapper
                 item={item}
                 level={level}
-                isActive={false}
-                onClick={() => { }}
-                onDoubleClick={() => { }}
+                isActive={isActive}
+                onClick={() => openFile(item._id, { pinned: false })}
+                onDoubleClick={() => openFile(item._id, { pinned: true })}
                 onRename={() => setIsRenaming(true)}
                 onDelete={() => {
-                    //TODO: Close tab
+                    closeTab(item._id);
                     deleteFile({ id: item._id })
                 }}
             >
@@ -199,7 +202,6 @@ export const Tree = ({
                 onClick={() => setIsOpen((value) => !value)}
                 onRename={() => setIsRenaming(true)}
                 onDelete={() => {
-                    //TODO: Close tab
                     deleteFile({ id: item._id })
                 }}
                 onCreateFile={() => startCreating("file")}
