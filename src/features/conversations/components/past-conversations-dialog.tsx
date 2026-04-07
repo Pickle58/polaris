@@ -9,7 +9,6 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-    CommandSeparator,
 } from "@/components/ui/command";
 
 import { useConversations } from "../hooks/use-conversations";

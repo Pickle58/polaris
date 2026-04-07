@@ -5,7 +5,6 @@ import { convex } from "@/lib/convex-client";
 
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { id } from "date-fns/locale";
 
 interface ListFilesToolOptions {
     projectId: Id<"projects">;
@@ -32,7 +31,7 @@ export const createListFilesTool = ({
 
                     // Sort folders first, then files, alphabetically by name
                     const sorted = files.sort((a, b) => {
-                        if (a.type === b.type) {
+                        if (a.type !== b.type) {
                             return a.type === "folder" ? -1 : 1;
                         }
                         return a.name.localeCompare(b.name);

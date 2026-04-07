@@ -142,7 +142,7 @@ export const ConversationSidebar = ({
                     </div>
                     <div className="flex items-center px-1 gap-1">
                         <Button
-                            size-icon-xs
+                            size="icon-xs"
                             variant="highlight"
                             onClick={() => setPastConversationsOpen(true)}
                         >
@@ -150,7 +150,7 @@ export const ConversationSidebar = ({
                         </Button>
 
                         <Button
-                            size-icon-xs
+                            size="icon-xs"
                             variant="highlight"
                             onClick={handleCreateConversation}
                         >

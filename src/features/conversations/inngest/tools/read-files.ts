@@ -41,7 +41,7 @@ export const createReadFilesTool = ({ internalKey }: ReadFilesToolOptions) => {
                         fileId: fileId as Id<"files">,
                        });
 
-                       if (file && file.content) {
+                       if (file?.type === "file" && file.content !== undefined) {
                         results.push({
                             fileId: file._id,
                             name: file.name,

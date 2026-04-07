@@ -20,7 +20,7 @@ export const createUpdateFileTool = ({ internalKey }: UpdateFileToolOptions) => 
         name: "updateFile",
         description: "Update the content of an existing file",
         parameters: z.object({
-            fileId: z.array(z.string()).describe("The ID of the file to update"),
+            fileId: z.string().describe("The ID of the file to update"),
             content: z.string().describe("The new content for the file"),            
         }),
         handler: async (params, { step: toolStep }) => {

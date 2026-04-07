@@ -201,9 +201,15 @@ export const updateFile = mutation({
             throw new Error("File not found");
         }
 
+        const now = Date.now();
+
         await ctx.db.patch(args.fileId, {
             content: args.content,
-            updatedAt: Date.now(),
+            updatedAt: now,
+        });
+
+        await ctx.db.patch("projects", file.projectId, {
+            updatedAt: now,
         });
 
         return args.fileId;
@@ -239,12 +245,19 @@ export const createFile = mutation({
             throw new Error("File with this name already exists in this folder");
         }
 
+        const now = Date.now();
+
         const fileId = await ctx.db.insert("files", {
             projectId: args.projectId,
             name: args.name,
-            type: "folder",
+            content: args.content,
+            type: "file",
             parentId: args.parentId,
-            updatedAt: Date.now(),
+            updatedAt: now,
+        });
+
+        await ctx.db.patch("projects", args.projectId, {
+            updatedAt: now,
         });
 
         return fileId;

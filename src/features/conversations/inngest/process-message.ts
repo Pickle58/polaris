@@ -68,7 +68,7 @@ export const processMessage = inngest.createFunction(
         //TODO: Check if this is needed
         await step.sleep("wait-for-db-sync", "1s");
 
-        // Get coversation for title generation check
+        // Get conversation for title generation check
         const conversation = await step.run("get-conversation", async () => {
             return await convex.query(api.system.getConversationById, {
                 internalKey,
@@ -80,7 +80,7 @@ export const processMessage = inngest.createFunction(
             throw new NonRetriableError("Conversation not found");
         }
 
-        // Fetch recent messages for conversattion context
+        // Fetch recent messages for conversation context
         const recentMessages = await step.run("get-recent-messages", async () => {
             return await convex.query(api.system.getRecentMessages, {
                 internalKey,
@@ -102,7 +102,7 @@ export const processMessage = inngest.createFunction(
                 .map((msg) => `${msg.role.toUpperCase()}: ${msg.content}`)
                 .join("\n\n");
 
-            systemPrompt += `\n\## Previous Conversation (for context only - do NOT repeat these respnses):\n${historyText}\n\n## Current Request:\nRespond ONLY to the users's new message below. Do not repeat or reference tour previous responses`;
+            systemPrompt += `\n## Previous Conversation (for context only - do NOT repeat these responses):\n${historyText}\n\n## Current Request:\nRespond ONLY to the user's new message below. Do not repeat or reference your previous responses`;
         }
 
         // Generate conversation title if it's still the default

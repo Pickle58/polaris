@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     );
 
     if (processingMessages.length === 0) {
-        return NextResponse.json({ successs: true, cancelled: false });
+        return NextResponse.json({ success: true, cancelled: false });
     }
 
     // Cancel all processing messages - this will trigger the cancelOn handler in the processMessage inngest function
