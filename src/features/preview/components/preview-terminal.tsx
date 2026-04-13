@@ -1,0 +1,86 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { Terminal } from "@xterm/xterm";
+import { FitAddon } from "@xterm/addon-fit";
+
+import "@xterm/xterm/css/xterm.css";
+import { r } from "shiki/dist/langs-bundle-full-C-zczmvu.mjs";
+
+interface PreviewTerminalProps {
+    output: string;
+}
+
+export const PreviewTerminal = ({ output }: PreviewTerminalProps) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const terminalRef = useRef<Terminal | null>(null);
+    const fitAddonRef = useRef<FitAddon | null>(null);
+    const lastLengthRef = useRef(0);
+
+    // Initialize the terminal on component mount
+    useEffect(() => {
+        if (!containerRef.current || terminalRef.current) return;
+
+        const terminal = new Terminal({
+           convertEol: true, 
+           disableStdin: true,
+           fontSize: 12,
+           fontFamily: "monospace",
+           theme: { background: "#1f2228" },
+        });
+
+        const fitAddon = new FitAddon();
+        terminal.loadAddon(fitAddon);
+        terminal.open(containerRef.current!);
+
+        terminalRef.current = terminal;
+        fitAddonRef.current = fitAddon;
+
+        // Write existing output on mount
+        if (output) {
+            terminal.write(output);
+            lastLengthRef.current = output.length;
+        }
+
+        requestAnimationFrame(() => fitAddon.fit());
+
+        const resizeObserver = new ResizeObserver(() => fitAddon.fit());
+        resizeObserver.observe(containerRef.current!);
+
+        return () => {
+           resizeObserver.disconnect();
+           terminal.dispose();
+           terminalRef.current = null;
+           fitAddonRef.current = null; 
+        };
+        // "output" does not need to be a dependency since it is not intended to update anything after the initial render. We only want to write the output once on mount.
+    }, []);
+
+    // Write output
+    useEffect(() => {
+        if (!terminalRef.current) return;
+
+            if (output.length < lastLengthRef.current) {
+                terminalRef.current.clear();
+                lastLengthRef.current = 0;
+            }
+
+            const newData = output.slice(lastLengthRef.current);
+            if (newData) {
+                terminalRef.current.write(newData);
+                lastLengthRef.current = output.length;
+            }
+    }, [output]);
+
+    return (
+        <div
+            ref={containerRef}
+            className="flex-1 min-h-0 p-3 
+            [&_xterm]:h-full! 
+            [&_xterm-viewport]:h-full!  
+            [&_xterm-screen]:h-full! 
+            bg-sidebar"
+        />
+    )
+
+};
