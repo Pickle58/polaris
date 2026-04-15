@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { useProject } from "../hooks/use-projects";
 
 import { Id } from "../../../../convex/_generated/dataModel";
-import { tr } from "date-fns/locale";
 
 export const PreviewView = ({ projectId }: { projectId: Id<"projects"> }) => {
     const project = useProject(projectId);
@@ -73,7 +72,7 @@ export const PreviewView = ({ projectId }: { projectId: Id<"projects"> }) => {
                 </Button>
                 <PreviewSettingsPopover
                     projectId={projectId}
-                    initalValues={project?.settings}
+                    initialValues={project?.settings}
                     onSave={restart}
                 />
             </div>

@@ -25,13 +25,13 @@ const formSchema = z.object({
 
 interface PreviewSettingsPopoverProps {
     projectId: Id<"projects">;
-    initalValues?: Doc<"projects">["settings"];
+    initialValues?: Doc<"projects">["settings"];
     onSave: () => void;
 };
 
 export const PreviewSettingsPopover = ({
     projectId,
-    initalValues,
+    initialValues,
     onSave,
 }: PreviewSettingsPopoverProps) => {
     const [open, setOpen] = useState(false);
@@ -39,8 +39,8 @@ export const PreviewSettingsPopover = ({
 
     const form = useForm({
         defaultValues: {
-            installCommand: initalValues?.installCommand || "",
-            devCommand: initalValues?.devCommand || "",
+            installCommand: initialValues?.installCommand || "",
+            devCommand: initialValues?.devCommand || "",
         },
         validators: {
             onSubmit: formSchema,
@@ -54,15 +54,15 @@ export const PreviewSettingsPopover = ({
                 },
             });
             setOpen(false);
-            onSave?.();
+            onSave();
         }
     });
 
     const handleOpenChange = (isOpen: boolean) => {
         if (isOpen) {
             form.reset({
-                installCommand: initalValues?.installCommand ?? "",
-                devCommand: initalValues?.devCommand ?? "",
+                installCommand: initialValues?.installCommand ?? "",
+                devCommand: initialValues?.devCommand ?? "",
             });
         }
         setOpen(isOpen);

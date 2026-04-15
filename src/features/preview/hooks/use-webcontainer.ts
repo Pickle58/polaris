@@ -9,7 +9,6 @@ import { useFiles } from "@/features/projects/hooks/use-files";
 
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { set } from "zod";
 
 // Singleton WebContainer instance
 let webContainerInstance: WebContainer | null = null;
