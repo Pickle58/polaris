@@ -81,6 +81,5 @@ export const useRenameProject = () => {
 };
 
 export const useUpdateProjectSettings = () => {
-    // TODO: Add optimistic mutation update once we have a better idea of how to handle the project settings in the UI. We will likely need to split the project settings into multiple mutations for different sections of the settings (e.g. dev environment settings, preview settings, etc.) in order to have a more granular optimistic update.
   return useMutation(api.projects.updateSettings);
 };
