@@ -18,7 +18,6 @@ import { ProjectsList } from "./projects-list";
 import { useEffect, useState } from "react";
 import { ImportGithubDialog } from "./import-github-dialog";
 import { NewProjectDialog } from "./new-project-dialog";
-import { set } from "zod";
 
 const font = Poppins({
     subsets: ["latin"],

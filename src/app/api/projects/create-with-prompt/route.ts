@@ -63,7 +63,7 @@ export async function POST(request: Request) {
         projectId,
         role: "user",
         content: prompt,
-        status: "processing",//Check if this should be processing or completed
+        status: "completed",
     });
 
     // Create assistant message placeholder with processing status

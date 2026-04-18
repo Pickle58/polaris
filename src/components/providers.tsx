@@ -13,7 +13,7 @@ import { UnauthenticatedView } from "@/features/auth/components/unauthenticated-
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { ThemeProvider } from "./theme-provider";
-import { AuthLoadingView } from "./auth-loading-view";
+import { AuthLoadingView } from "./Auth-loading-view";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 

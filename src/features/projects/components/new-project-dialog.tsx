@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ky from "ky";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -67,7 +67,7 @@ export const NewProjectDialog = ({
         showCloseButton={false}
         className="sm:max-w-lg p-0"
       >
-        <DialogHeader className="hidden">
+        <DialogHeader className="sr-only">
           <DialogTitle>What do you want to build?</DialogTitle>
           <DialogDescription>
             Describe your project and AI will help you create it.
