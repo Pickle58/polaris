@@ -7,6 +7,7 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { useEditor } from "../hooks/use-editor";
 import { FileBreadcrumbs } from "./file-breadcrumbs";
 import { CodeEditor } from "./code-editor";
+import { AlertTriangleIcon } from "lucide-react";
 
 const DEBOUNCE_MS = 1500;
 
@@ -63,7 +64,14 @@ export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
                     />
                 )}
                 {isActiveFileBinary && (
-                   <p>TODO: Display binary file preview</p> 
+                   <div className="size-full flex items-center justify-center">
+                        <div className="flex flex-col items-center gap-2.5 max-w-md text-center">
+                            <AlertTriangleIcon className="size-10 text-yellow-500" />
+                            <p className="text-sm">
+                                Binary files are not supported in the editor. Please download the file to view its contents.
+                            </p>
+                        </div>
+                   </div>
                 )}
             </div>
         </div>
